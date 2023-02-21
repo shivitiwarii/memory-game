@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Memory training game</title>
+  <link rel="stylesheet" href="game.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div id="banner"><img src='banner.png' alt="banner" width="500" height="180"></div>
+  <div class="instruction">Click to read instructions!</div>
+  <div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<p>Input number of cards and click 'Start' button to start the game. 
+        In every turn, click on 3 cards to turn them over, if the cards have the same number, 8 points are 
+        added to your score, else 3 points are deducted, the game ends when all cards are revealed or time is up.</p>
+		</div>
+	</div>
+  
+  <div id="numCardsContainer">
+    <label id="level">Enter number of cards to play with &nbsp</label>
+    <input id="levelInput" type="number" min="6" max="18" value="6">
+  </div>
+  <div id="buttonContainer">
+    <button id="startBtn">Start</button>
+    <button id="resetBtn">Reset</button>
+  </div>
+  <div id="cards">
+  </div>
+  <div id="tableContainer">
+    <table id="table">
+      <tr>
+        <th>
+          Scoreboard
+        </th>
+        <th id="score">
+          0
+        </th>
+      </tr>
+    </table>
+  </div>
+  <p id="timer">&#9203 Time elapsed  0s/60s</p>
+  <script src="main.js"></script>
+</body>
+
+</html>
