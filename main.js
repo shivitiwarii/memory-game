@@ -7,9 +7,10 @@ var timerDisplay = document.getElementById("timer");
 var timeDisplay = 0;
 var flag = false; //to prevent users from clicking start button multiple times(for example, when a game is already in progress)
 var flagWinner = false; //to prevent the timer from running internally when the game is over
+var invalid = false;  //to prevent the timer from starting if invalid number of cards are entered
 
 //code to handle the instruction modal box 
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("modalBox");
 var button = document.getElementsByClassName("instruction")[0];
 var span = document.getElementsByClassName("close")[0];
 
@@ -38,6 +39,7 @@ resetBtn.addEventListener("click", function () {
 function dynamicDisplay() {
   var numCard = document.getElementById("levelInput").value; // getting the number of cards inputted by user
   cards.innerHTML = "";
+  invalid = false;
   var nums = []; // array of numbers representing cards to be displayed
   for (x = 1; x <= numCard / 3; x++) {
     nums.push(x);
@@ -49,6 +51,8 @@ function dynamicDisplay() {
     if (numCard % 3 != 0) {
       //if user enter a value not a multiple of 3, alert them
       alert("Please enter a number divisible by 3");
+      invalid = true;
+      location.reload();
       return;
     }
     var individualCard = document.createElement("div"); //creating an element for each card
@@ -56,7 +60,7 @@ function dynamicDisplay() {
     individualCard.setAttribute("class", "card");
     individualCard.addEventListener("click",
       function () {
-        if (this.innerHTML == "") {
+        if (this.innerHTML == "" && clicked.length < 3) {
           this.style.background = "#DDA0DD";
           var number = parseInt(this.id.replace("card", "")); //check if u can modify this
           this.textContent = randomNums[number];
@@ -74,7 +78,7 @@ function dynamicDisplay() {
 
 var counter = 0; //to keep track of the number of triplets hit
 function identifyTriplet() {
-  matched = false;
+  //const turnedOverCards = document.querySelectorAll('.turned-over');
   const numOfCards = document.getElementById("levelInput").value; // number of cards
   //if this is true triplet is found
   if (clickedVals[0] == clickedVals[1] && clickedVals[1] == clickedVals[2]) {
@@ -88,7 +92,6 @@ function identifyTriplet() {
     score += 8;
     clicked = [];
     clickedVals = [];
-    
   }
   else {
     score -= 3;
@@ -101,15 +104,7 @@ function identifyTriplet() {
       clickedVals = [];
     }, 500);
   }
-
-  function flipCard() {
-    // check if the card has already been matched
-    if (this.getAttribute("data-matched") === "true") {
-      return;
-    }
-    // rest of the function
-  }
-
+  
   //game ends if number of triplets found = number of cards/3
   if (counter == numOfCards / 3) {
     counter = 0;
@@ -118,11 +113,6 @@ function identifyTriplet() {
   scoreBoard.textContent = score;
 }
 
-function freezeCards(array) {
-  for (i = 0; i < array.length; i++) {
-    array[i].setAttribute("disabled", "true");
-  }
-}
 
 //allows to alert the winner and end the game
 function alertWinner() {
@@ -150,13 +140,16 @@ function randomiseNums(nums) {
 //since the game starts 
 var interval;
 function timer() {
-  var begin = new Date().getTime();
-  interval = setInterval(function () {
-    var current = new Date().getTime();
-    var diff = current - begin;
-    timeDisplay++;
-    timerDisplay.innerHTML = "&#9203 Time elapsed " + Math.floor(diff / 1000) + "s/60s";
-  }, 1000);
+    if (!invalid) {
+    invalid = false;
+    var begin = new Date().getTime();
+    interval = setInterval(function () {
+      var current = new Date().getTime();
+      var diff = current - begin;
+      timeDisplay++;
+      timerDisplay.innerHTML = "&#9203 Time elapsed " + Math.floor(diff / 1000) + "s/60s";
+    }, 1000);
+  }
 }
 
 //this function allows to end the game after 1 minute

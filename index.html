@@ -10,18 +10,19 @@
 <body>
   <div id="banner"><img src='banner.png' alt="banner" width="500" height="180"></div>
   <div class="instruction">Click to read instructions!</div>
-  <div id="myModal" class="modal">
+  <div id="modalBox" class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span>
 			<p>Input number of cards and click 'Start' button to start the game. 
         In every turn, click on 3 cards to turn them over, if the cards have the same number, 8 points are 
-        added to your score, else 3 points are deducted, the game ends when all cards are revealed or time is up.</p>
+        added to your score, else 3 points are deducted, the game ends when all cards are revealed or time is up. The maximum cards
+      you can play with is 21 and minimum is 6.</p>
 		</div>
 	</div>
   
   <div id="numCardsContainer">
     <label id="level">Enter number of cards to play with &nbsp</label>
-    <input id="levelInput" type="number" min="6" max="18" value="12">
+    <input id="levelInput" type="number" step="1" min="6" max="21" value="12">
   </div>
   <div id="buttonContainer">
     <button id="startBtn">Start</button>
