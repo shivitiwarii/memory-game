@@ -109,6 +109,7 @@ function identifyTriplet() {
   if (counter == numOfCards / 3) {
     counter = 0;
     alertWinner();
+    location.reload();
   }
   scoreBoard.textContent = score;
 }
@@ -158,6 +159,7 @@ function timeOut() {
     if (flagWinner == false) {
       clearInterval(interval);
       alert("Game Over! Your score is " + score);
+      //location.reload();
     }
   }, 60000 - (timeDisplay * 1000));
 }
