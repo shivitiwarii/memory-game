@@ -1,13 +1,11 @@
-
-var clicked = []; // array of cards clicked
-var clickedVals = []; // array of values of cards clicked
+var reveal = []; // array of cards clicked
+var revealVals = []; // array of values of cards clicked
 var score = 0; // score
 var scoreBoard = document.getElementById("score");
 var timerDisplay = document.getElementById("timer");
 var timeDisplay = 0;
 var flag = false; //to prevent users from clicking start button multiple times(for example, when a game is already in progress)
 var flagWinner = false; //to prevent the timer from running internally when the game is over
-var invalid = false;  //to prevent the timer from starting if invalid number of cards are entered
 
 //code to handle the instruction modal box 
 var modal = document.getElementById("modalBox");
@@ -39,62 +37,61 @@ resetBtn.addEventListener("click", function () {
 function dynamicDisplay() {
   var numCard = document.getElementById("levelInput").value; // getting the number of cards inputted by user
   cards.innerHTML = "";
-  invalid = false;
   var nums = []; // array of numbers representing cards to be displayed
   for (x = 1; x <= numCard / 3; x++) {
     nums.push(x);
     nums.push(x);
     nums.push(x);
   }
-  randomNums = randomiseNums(nums); //randomising the numbers
+  swappedVals = interchanging(nums); //randomising the numbers
   for (i = 0; i < numCard; i++) {
-    var individualCard = document.createElement("div"); //creating an element for each card
-    individualCard.setAttribute("id", "card" + i);
-    individualCard.setAttribute("class", "card");
-    individualCard.addEventListener("click",
+    var singleCard = document.createElement("div"); //creating an element for each card
+    singleCard.setAttribute("id", "card" + i);
+    singleCard.setAttribute("class", "card");
+    singleCard.addEventListener("click",
       function () {
-        if (this.innerHTML == "" && clicked.length < 3) {
+        if (this.innerHTML == "" && reveal.length < 3) {
           this.style.background = "#DDA0DD";
           var number = parseInt(this.id.replace("card", "")); //check if u can modify this
-          this.textContent = randomNums[number];
-          clicked.push(this);
-          clickedVals.push(randomNums[number]);
-          if (clicked.length == 3) {
-            identifyTriplet();
+          this.textContent = swappedVals[number];
+          reveal.push(this);
+          revealVals.push(swappedVals[number]);
+          if (reveal.length == 3) {
+            findTriplet();
           }
         }
       }
     );
-    cards.appendChild(individualCard);
+    cards.appendChild(singleCard);
   }
   return true;
 }
 
 var counter = 0; //to keep track of the number of triplets hit
-function identifyTriplet() {
+function findTriplet() {
   //const turnedOverCards = document.querySelectorAll('.turned-over');
   const numOfCards = document.getElementById("levelInput").value; // number of cards
   //if this is true triplet is found
-  if (clickedVals[0] == clickedVals[1] && clickedVals[1] == clickedVals[2]) {
+  if (revealVals[0] == revealVals[1] && revealVals[1] == revealVals[2]) {
     //keep track of number of triplets found to end the game when all triplets are found  
     counter++;
-    for (i = 0; i < clicked.length; i++) {
-      clicked[i].textContent = "";
-      clicked[i].style.display = "none";
+    for (i = 0; i < reveal.length; i++) {
+      reveal[i].textContent = "";
+      reveal[i].style.display = "none";
     }
     score += 8;
-    clicked = [];
-    clickedVals = [];
+    reveal = [];
+    revealVals = [];
   }
   else {
     score -= 3;
     setTimeout(function () {
-      for (i = 0; i < clicked.length; i++) {
-        clicked[i].textContent = "";
-        clicked[i].style.backgroundColor = "";
+      for (i = 0; i < reveal.length; i++) {
+        reveal[i].textContent = "";
+        reveal[i].style.backgroundColor = "";
       }
-      clicked = [];
-      clickedVals = [];
+      reveal = [];
+      revealVals = [];
     }, 500);
   }
   //game ends if number of triplets found = number of cards/3
@@ -111,13 +108,13 @@ function alertWinner() {
   alert("You win! Your score is " + score + "");
   flagWinner = true;
   timeDisplay = 0;
- // timerDisplay.innerHTML = "&#9203 Time elapsed " + timeDisplay;
+  // timerDisplay.innerHTML = "&#9203 Time elapsed " + timeDisplay;
   score = 0;
   clearInterval(interval);
 }
 
 // function to shuffle the cards
-function randomiseNums(nums) {
+function interchanging(nums) {
   for (i = 0; i < nums.length; i++) {
     x = Math.floor(Math.random() * (i + 1));
     var swap = nums[i];
@@ -131,8 +128,6 @@ function randomiseNums(nums) {
 //since the game starts 
 var interval;
 function timer() {
-  if (!invalid) {
-    invalid = false;
     var begin = new Date().getTime();
     interval = setInterval(function () {
       var current = new Date().getTime();
@@ -141,7 +136,6 @@ function timer() {
       timerDisplay.innerHTML = "&#9203 Time elapsed " + Math.floor(diff / 1000) + "s/60s";
     }, 1000);
   }
-}
 
 //this function allows to end the game after 1 minute
 function timeOut() {
@@ -151,15 +145,20 @@ function timeOut() {
       alert("Game Over! Your score is " + score);
       location.reload();
     }
-  }, 61000 - (timeDisplay * 1000));
+  }, 60000 - (timeDisplay * 1000));
 }
 
+
+//starting point of the game, everything starts when start button is clicked
+//1. validates the number of cards entered
+//2. calls the function to display the cards
+//3. starts the timer
 startBtn.addEventListener("click", function () {
   let textBoxVal = document.getElementById("levelInput").value;
   const inputBox = document.getElementById("levelInput");
 
-  if(textBoxVal > 24 || textBoxVal < 6 || textBoxVal % 3 != 0){
-    alert("Please enter a valid number in the range 6-21!");
+  if (textBoxVal > 24 || textBoxVal < 6 || textBoxVal % 3 != 0) {
+    alert("Please enter a valid number in the range 6-24!");
     location.reload();
   }
   if (!flag && textBoxVal.length != 0 && textBoxVal % 3 == 0 && textBoxVal <= 24 && textBoxVal >= 6) {
