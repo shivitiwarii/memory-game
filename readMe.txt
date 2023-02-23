@@ -8,4 +8,4 @@ Method 1:
 
 Method 2:
 
-Access the game via this link: https://bright-melba-b18b12.netlify.app/ 
+Access the game via this link: https://memory-training-game.netlify.app/ 

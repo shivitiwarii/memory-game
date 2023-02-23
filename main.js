@@ -46,15 +46,8 @@ function dynamicDisplay() {
     nums.push(x);
     nums.push(x);
   }
-  randomNums = randomiseNums(nums); // shuffle the cards
+  randomNums = randomiseNums(nums); //randomising the numbers
   for (i = 0; i < numCard; i++) {
-    if (numCard % 3 != 0) {
-      //if user enter a value not a multiple of 3, alert them
-      alert("Please enter a number divisible by 3");
-      invalid = true;
-      location.reload();
-      return;
-    }
     var individualCard = document.createElement("div"); //creating an element for each card
     individualCard.setAttribute("id", "card" + i);
     individualCard.setAttribute("class", "card");
@@ -74,6 +67,7 @@ function dynamicDisplay() {
     );
     cards.appendChild(individualCard);
   }
+  return true;
 }
 
 var counter = 0; //to keep track of the number of triplets hit
@@ -86,7 +80,6 @@ function identifyTriplet() {
     counter++;
     for (i = 0; i < clicked.length; i++) {
       clicked[i].textContent = "";
-      //clicked[i].style.background = "#66CDAA";
       clicked[i].style.display = "none";
     }
     score += 8;
@@ -104,7 +97,6 @@ function identifyTriplet() {
       clickedVals = [];
     }, 500);
   }
-  
   //game ends if number of triplets found = number of cards/3
   if (counter == numOfCards / 3) {
     counter = 0;
@@ -114,17 +106,15 @@ function identifyTriplet() {
   scoreBoard.textContent = score;
 }
 
-
 //allows to alert the winner and end the game
 function alertWinner() {
   alert("You win! Your score is " + score + "");
   flagWinner = true;
   timeDisplay = 0;
-  timerDisplay.innerHTML = "&#9203 Time elapsed " + timeDisplay;
+ // timerDisplay.innerHTML = "&#9203 Time elapsed " + timeDisplay;
   score = 0;
   clearInterval(interval);
 }
-
 
 // function to shuffle the cards
 function randomiseNums(nums) {
@@ -141,7 +131,7 @@ function randomiseNums(nums) {
 //since the game starts 
 var interval;
 function timer() {
-    if (!invalid) {
+  if (!invalid) {
     invalid = false;
     var begin = new Date().getTime();
     interval = setInterval(function () {
@@ -159,23 +149,28 @@ function timeOut() {
     if (flagWinner == false) {
       clearInterval(interval);
       alert("Game Over! Your score is " + score);
-      //location.reload();
+      location.reload();
     }
-  }, 60000 - (timeDisplay * 1000));
+  }, 61000 - (timeDisplay * 1000));
 }
 
-
 startBtn.addEventListener("click", function () {
-  if (!flag) {
+  let textBoxVal = document.getElementById("levelInput").value;
+  const inputBox = document.getElementById("levelInput");
+
+  if(textBoxVal > 24 || textBoxVal < 6 || textBoxVal % 3 != 0){
+    alert("Please enter a valid number in the range 6-21!");
+    location.reload();
+  }
+  if (!flag && textBoxVal.length != 0 && textBoxVal % 3 == 0 && textBoxVal <= 24 && textBoxVal >= 6) {
     flag = true;
     flagWinner = false;
+    inputBox.disabled = true;
     score = 0;
     // call function to display the cards
     dynamicDisplay();
-    //start timer
-    timer();
-    //start timeout function to end game after 1 minute
-    timeOut();
+    timer();      //start timer
+    timeOut();    //start timeout function to end game after 1 minute
   }
 });
 
