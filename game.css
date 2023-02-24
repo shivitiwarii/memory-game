@@ -62,17 +62,14 @@ body {
 }
 
 #levelInput {
-  width: 40px;
-  height: 25px;
+  width: 45px;
+  height: 30px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 7px;
   border: 1px solid #b23066;
   font-size: 16px;
-  margin: 4px 2px;
   color: #b23066;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin-right: 5px;
-  cursor: pointer;
 }
 
 
@@ -80,7 +77,7 @@ body {
   background-color: #b23066;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 7px;
   text-align: center;
   font-size: 16px;
   margin: 4px 2px;
@@ -92,7 +89,7 @@ body {
   background-color: #b23066;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 7px;
   text-align: center;
   font-size: 16px;
   margin: 4px 2px;
@@ -112,15 +109,14 @@ body {
   margin: 8.5px;
   font-size: 24px;
   cursor: pointer;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;  
 }
 
-.card:hover {
+ .card:hover {
   transform: scale(1.15);
   animation: fadeOut 1s;
   transition: 0.3s;
-}
-
+} 
 
 @keyframes fadeOut {
   from {
@@ -178,7 +174,7 @@ th {
   color: #b23066;
   justify-content: center;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   top: 180px;
 }
